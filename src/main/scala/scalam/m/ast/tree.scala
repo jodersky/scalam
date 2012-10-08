@@ -13,9 +13,11 @@ case class DoubleLiteral(x: Double) extends Expression { def m = x.toString }
 case class StringLiteral(x: String) extends Expression { def m = "'" + x.toString + "'" }
 case object SliceLiteral extends Expression { def m = ":" }
 case class ArrayLiteral(elements: Expression*) extends Expression {
-  def m = elements.mkString("[", ",", "]")
+  def m = elements.map(_.m).mkString("[", ",", "]")
 }
-
+case class MatrixLiteral(rows: Expression*) extends Expression {
+  def m = rows.map(_.m).mkString("[", ";", "]")
+}
 case class Variable(id: Identifier) extends Expression { def m = id.m }
 case class IndexMatrix(id: Identifier, indices: Expression*) extends Expression {
   def m = id.m + indices.map(_.m).mkString("(", ",", ")")
@@ -23,7 +25,7 @@ case class IndexMatrix(id: Identifier, indices: Expression*) extends Expression 
 case class IndexStructure(id: Identifier, indices: Expression*) extends Expression {
   def m = id.m + indices.map(_.m).mkString("{", ",", "}")
 }
-case class Call(function: Identifier, params: Expression*) extends Expression {
+case class Function(function: Identifier, params: Expression*) extends Expression {
   def m = function.m + params.map(_.m).mkString("(", ",", ")")
 }
 

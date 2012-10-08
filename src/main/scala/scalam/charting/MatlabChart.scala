@@ -70,9 +70,16 @@ object MatlabChart {
   private var counter = -1;
   private def next = { counter += 1; counter }
 
+  private def randomDataSet(length: Int) = {
+    import scala.util.Random
+    val data = for (i <- 0 until length) yield (i * 1.0, Random.nextDouble() * 10)
+    val name = Random.nextString(10)
+    new DataSet(data, name)
+  } 
+  
   val test = Seq(
     new DataSet(Seq((0.0, 1.0), (1.0, 1.0), (2.0, 1.0), (3.0, 0.0), (4.0, 1.0), (5.0, 1.0)), "temperature"),
-    new DataSet(Seq((0.0, 0.0), (1.0, 1.0), (2.0, 4.0), (3.0, 9.0)), """\alpha"""))
+    new DataSet(Seq((0.0, 0.0), (1.0, 1.0), (2.0, 4.0), (3.0, 9.0)), """\alpha""")) ++ (0 to 10).map(_ => randomDataSet(10))
     
     val testChart = new MatlabChart(test, "title", "x [\\sigma \\epsilon]", "\\vec{y} [\\frac{1}{2}]", colorScheme = new HSV(test))
     
