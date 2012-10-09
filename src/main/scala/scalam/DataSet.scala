@@ -3,7 +3,7 @@ package scalam
 import scalax.file.Path
 import breeze.linalg.DenseVector
 
-class DataSet(val points: Seq[(Double, Double)], val name: String) {
+case class DataSet(val points: Seq[(Double, Double)], val name: String) {
   
   def save(path: Path) = {
     path.createFile(createParents = true, failIfExists = false)

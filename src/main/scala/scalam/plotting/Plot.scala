@@ -4,6 +4,7 @@ import scala.sys.process._
 import scalam.DataSet
 import scalam.m.ast._
 import scalax.file.Path
+import scalam.plotting.styles._
 
 class Plot(
   val dataSets: Seq[DataSet],
@@ -13,7 +14,7 @@ class Plot(
   grid: Boolean = true,
   legend: Boolean = true,
   fontSize: Int = 10,
-  colorScheme: ColorScheme = JET,
+  styleSchemes: Seq[StyleScheme[Style]] = Seq(),
   name: String = "plot" + Plot.next) {
 
   val directory = Path(name)
@@ -24,14 +25,11 @@ class Plot(
     case (d, i) => RichDataSet(d, Path("data") / i.toString, Identifier("data" + (i + 1)))
   }
 
-  private val colors = colorScheme(dataSets)
-
   lazy val statements: List[Statement] = {
     def loadData(dataSet: RichDataSet) = Assign(dataSet.id, Function(Identifier("load"), StringLiteral(dataSet.localPath.path)))
-    def initialColor(ds: Seq[DataSet]) = colorScheme match {
-      case predefined: MColorScheme => predefined.initial(ds) :: Nil
-      case _ => Nil
-    }
+    
+    val (initial: Seq[Seq[Statement]], styleMaps: Seq[DataSet => Style]) = styleSchemes.map(_.apply(dataSets)).unzip
+    
     val figureId = Identifier("fh")
     val on = StringLiteral("on")
     val off = StringLiteral("off")
@@ -42,21 +40,23 @@ class Plot(
     def xLabel(s: String) = Evaluate(Function(Identifier("xlabel"), StringLiteral(s)))
     def yLabel(s: String) = Evaluate(Function(Identifier("ylabel"), StringLiteral(s)))
     def fontSize(size: Int) = Evaluate(Function(Identifier("set"), Variable(Identifier("gca")), StringLiteral("fontsize"), IntLiteral(size)))
-    def plot(dataSet: RichDataSet) =
-      Evaluate(
-        Function(
-          Identifier("plot"),
+    def plot(dataSet: RichDataSet) = {
+      val plot = Identifier("plot")
+      val styleParams = styleMaps.flatMap(styleMap => {val style = styleMap.apply(dataSet.underlying); Seq(style.name, style.expression)})
+      val params = Seq(
           IndexMatrix(dataSet.id, SliceLiteral, IntLiteral(1)),
-          IndexMatrix(dataSet.id, SliceLiteral, IntLiteral(2)),
-          StringLiteral("color"),
-          colors(dataSet.underlying).expression))
+          IndexMatrix(dataSet.id, SliceLiteral, IntLiteral(2))) ++
+          styleParams
+     
+          Evaluate(Function(plot, params: _*))
+    }
     def legend(dataSets: Seq[DataSet]) =
       Evaluate(Function(Identifier("legend"), (for (d <- dataSets) yield StringLiteral(d.name)): _*)) :: Nil
     def wait(figureId: Identifier) = List(Evaluate(Function(Identifier("waitfor"), Variable(figureId))))
 
     val commands = new scala.collection.mutable.ListBuffer[Statement]
     commands ++= (for (d <- richDataSets) yield loadData(d))
-    commands ++= initialColor(richDataSets.map(_.underlying))
+    commands ++= initial.flatten
     commands += newFigure(figureId)
     commands += hold(true)
     commands += grid(this.grid)
@@ -104,4 +104,18 @@ class Plot(
 object Plot {
   private[this] var counter = -1
   private def next = { counter += 1; counter }
+  
+  
+   private def randomDataSet(length: Int) = {
+    import scala.util.Random
+    val data = for (i <- 0 until length) yield (i * 1.0, Random.nextDouble() * 10)
+    val name = Random.nextString(10)
+    new DataSet(data, name)
+  } 
+  
+  val ds = Seq(
+    new DataSet(Seq((0.0, 1.0), (1.0, 1.0), (2.0, 1.0), (3.0, 0.0), (4.0, 1.0), (5.0, 1.0)), "temperature"),
+    new DataSet(Seq((0.0, 0.0), (1.0, 1.0), (2.0, 4.0), (3.0, 9.0)), """\alpha""")) ++ (0 to 10).map(_ => randomDataSet(10))
+  
+  val test = new Plot(ds, "title", "x", "y")
 }
