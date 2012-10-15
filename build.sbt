@@ -10,6 +10,11 @@ libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-file" % "0.4
 
 libraryDependencies += "org.scalanlp" %% "breeze-math" % "0.1"
 
+//onejar
+seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
+
+libraryDependencies += "commons-lang" % "commons-lang" % "2.6"
+
 //libraryDependencies += "org.scala-lang" % "scala-swing" % "2.9.2"
 
 

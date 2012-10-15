@@ -10,3 +10,4 @@ case object Solid extends Line {def expression = StringLiteral("-")}
 case object Dashed extends Line {def expression = StringLiteral("--")}
 case object Dotted extends Line {def expression = StringLiteral(":")}
 case object DashDot extends Line {def expression = StringLiteral("-.")}
+case object NoLine extends Line {def expression = StringLiteral("none")}

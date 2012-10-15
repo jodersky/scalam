@@ -1,7 +1,7 @@
 package scalam
 
 import scalax.file.Path
-import breeze.linalg.DenseVector
+import breeze.linalg.{Vector, DenseVector}
 
 case class DataSet(val points: Seq[(Double, Double)], val name: String) {
   
@@ -19,6 +19,6 @@ case class DataSet(val points: Seq[(Double, Double)], val name: String) {
 
 object DataSet {
   
-  def apply(x: DenseVector[Double], y: DenseVector[Double], name: String = "") = new DataSet(x.data zip y.data, name)
-  
+  def apply(x: Vector[Double], y: Vector[Double], name: String = "") = new DataSet(x.valuesIterator.toSeq zip y.valuesIterator.toSeq, name)
+   
 }
