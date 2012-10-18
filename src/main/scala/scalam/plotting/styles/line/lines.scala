@@ -1,8 +1,9 @@
-package scalam.plotting.styles
+package scalam.plotting.styles.line
 
 import scalam.m.ast._
+import scalam.plotting.styles.StyleElement
 
-trait Line extends Style {
+trait Line extends StyleElement {
   def name = StringLiteral("LineStyle")
 }
 

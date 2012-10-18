@@ -4,18 +4,17 @@ import scalam.DataSet
 import scalam.m.ast._
 
 
-trait Style {
+trait StyleElement {
   //command line option
   def name: StringLiteral
   //expression
   def expression: Expression
 }
 
-
-trait StyleScheme[+S <: Style] {  
+trait Style[+S <: StyleElement] {  
   def apply(dataSets: Seq[DataSet]): Tuple2[Seq[Statement], DataSet => S]
 }
 
-case class Uniform[S <: Style](element: S) extends StyleScheme[S] {
+case class Uniform[S <: StyleElement](element: S) extends Style[S] {
   override def apply(dataSets: Seq[DataSet]) = (Seq.empty[Statement], (d: DataSet) => element)
 }
