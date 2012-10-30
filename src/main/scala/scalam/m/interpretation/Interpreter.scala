@@ -1,4 +1,4 @@
-package scalam.m
+package scalam.m.interpretation
 
 import scalax.file.Path
 import scala.sys.process._
