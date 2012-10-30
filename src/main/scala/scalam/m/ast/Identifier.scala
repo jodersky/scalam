@@ -7,7 +7,7 @@ case class Identifier(name: String) extends Mable{
   def toValid = {
     val word = name.filter(c => c.isLetterOrDigit || c == '_')
     val id = word.headOption match {
-      case None => sys.error("")
+      case None => "x"
       case Some(c) => if (!c.isLetter) 'x' + word else word
     }
     Identifier(id)
