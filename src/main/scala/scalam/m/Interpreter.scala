@@ -7,7 +7,6 @@ import java.io._
 import scala.concurrent._
 
 class Interpreter(command: String, pwd: Path) {
-
   private val inputStream = new SyncVar[OutputStream];
 
   val process = Process(command, pwd.fileOption, "" -> "").run(
@@ -17,11 +16,16 @@ class Interpreter(command: String, pwd: Path) {
       stderr => Source.fromInputStream(stderr).getLines.foreach(println)));
 
   def write(s: String): Unit = synchronized {
-    inputStream.get.write((s + "\n").getBytes)
+    inputStream.get.write((s).getBytes)
     inputStream.get.flush()
   }
 
   def close(): Unit = {
     inputStream.get.close
+  }
+  
+  def kill(): Unit = {
+    close()
+    process.destroy()
   }
 }
