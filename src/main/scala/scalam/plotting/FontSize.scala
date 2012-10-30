@@ -1,6 +1,7 @@
 package scalam.plotting
 
-
-/** Helper class used for implicit font size specification. A font size is nothing but an Int,
- * but defining an implicit of type int could pollute a lot of code. */
-case class FontSize(fs: Int)
+/**
+ * Helper class used for implicit font size specification. Although a font size is typically represented by an Int,
+ * a custom class is used as to avoid code pollution if using implicits.
+ */
+case class FontSize(fontSize: Int)
