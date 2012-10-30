@@ -16,7 +16,10 @@ class Plot(
   legend: Boolean = true,
   fontSize: Int = 10,
   styles: Seq[Style[StyleElement]] = Seq(),
-  name: String = "") {
+  name: String = "plot" + Plot.next) {
+
+  val directory = Path(name)
+  val localPlotFile = Path("results.m")
 
   def preamble = {
     val df = new java.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
@@ -42,11 +45,11 @@ class Plot(
           Identifier(firstId.name + "_" + prev)
         }
       }
-      new RichDataSet(finalId, Path(".") / finalId.name, dataSet)
+      new RichDataSet(finalId, Path("data") / finalId.name, dataSet)
     }
     dataSets.map(toRich(_))
   }
-  
+
   def resolveStyles: (Seq[Root], Seq[DataSet => StyleElement]) = {
     val setupAndStyles = styles.map(_.apply(dataSets))
     val setup = setupAndStyles.map(_._1).flatten
@@ -59,16 +62,15 @@ class Plot(
     val richDataSets = this.richDataSets
 
     val (setup, styleMappings) = resolveStyles
-    
+
     val loads = richDataSets.map(r =>
       m.load(r.id, r.localPath) withComment SimpleComment(r.underlying.label))
-   
-    val plots = richDataSets.map{r =>
+
+    val plots = richDataSets.map { r =>
       val styleElements = styleMappings.map(_.apply(r.underlying))
-      m.plot(r.id, styleElements) 
+      m.plot(r.id, styleElements)
     }
-    
-    
+
     val roots = new ListBuffer[Root]
     roots ++= preamble
     roots ++= loads
@@ -81,8 +83,27 @@ class Plot(
     roots += m.fontSize(this.fontSize)
     roots ++= plots
     roots += m.legend(dataSets)
-    
+
     roots.toList
+  }
+
+  def save() = {
+    for (d <- richDataSets) d.underlying.save(directory / d.localPath)
+
+    val plotFile = (directory / localPlotFile)
+    plotFile.createFile(createParents = true, failIfExists = false)
+    for (processor <- plotFile.outputProcessor; out = processor.asOutput) {
+      for (p <- preamble) out.write(p.line + "\n")
+      for (r <- roots) out.write(r.line + "\n")
+    }
+
+  }
+
+  def run() = {
+    Process(
+      "matlab -nodesktop -nosplash -r " + localPlotFile.path.takeWhile(_ != '.'),
+      directory.fileOption,
+      "" -> "") #> (directory / "log.txt").fileOption.get run
   }
 
 }
