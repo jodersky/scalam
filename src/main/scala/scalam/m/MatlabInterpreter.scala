@@ -4,9 +4,9 @@ import ast._
 import scalax.file.Path
 
 class MatlabInterpreter(pwd: Path) extends Interpreter("matlab -nosplash -nodesktop", pwd) {
-  def evaluate(statement: ast.Statement) = write(statement.m + "\n")
+  def evaluate(root: ast.Root) = write(root.line + "\n")
   def exit() = {
-    val cmd = Evaluate(Function(Identifier("exit")))
+    val cmd = Function(Identifier("exit"))
     evaluate(cmd)
     super.close()
   }

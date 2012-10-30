@@ -14,9 +14,8 @@ trait Plotter {
   def plot(dataSets: Seq[DataSet], title: String, x: String, y: String, grid: Boolean = true, legend: Boolean = true)(implicit styles: Seq[Style[_]] = defaultStyles, fontSize: FontSize =  defaultFontSize) = {
     val p = new Plot(dataSets, title, x, y, grid, legend, styles = styles, fontSize = fontSize.fontSize)
     p.save()
-    val s = Evaluate(Function(Identifier("run"), StringLiteral((p.directory / p.localPlotFile).path)))
-    //val s = "run '" + (p.directory / p.localPlotFile).path + "'"
-    println(s.m)
+    val s = Function(Identifier("run"), StringLiteral((p.directory / p.localPlotFile).path))
+    println(s.line)
     interpreter.evaluate(s)
   }
   
