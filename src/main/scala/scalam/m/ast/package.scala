@@ -3,9 +3,21 @@ package scalam.m.ast
 trait Mable { def m: String }
 
 //top level m constructs
-case class Identifier(name: String) extends Mable { def m: String = name}
+case class Identifier(name: String) extends Mable {
+  def m: String = name
+
+  def toValid = {
+    val word = name.filter(c => c.isLetterOrDigit || c == '_')
+    val id = word.headOption match {
+      case None => sys.error("")
+      case Some(c) => if (!c.isLetter) 'x' + word else word
+    }
+    Identifier(id)
+  }
+}
 trait Expression extends Mable
 trait Statement extends Mable
+case class Comment(text: String) extends Mable {def m = "% " + text}
 
 //expressions
 case class IntLiteral(x: Int) extends Expression { def m = x.toString }
