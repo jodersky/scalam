@@ -1,6 +1,6 @@
 package scalam.plotting.styles
 
-import scalam.DataSet
+import scalam.plotting.DataSet
 import scalam.m.ast._
 
 

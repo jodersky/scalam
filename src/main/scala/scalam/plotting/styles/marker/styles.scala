@@ -1,6 +1,6 @@
 package scalam.plotting.styles.marker
 
-import scalam.DataSet
+import scalam.plotting.DataSet
 import scalam.m.ast._
 import scalam.plotting.styles.Style
 import scalam.plotting.styles.StyleElement

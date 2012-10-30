@@ -1,7 +1,7 @@
 package scalam.plotting.styles.color
 
 import scalam.m.ast._
-import scalam.DataSet
+import scalam.plotting.DataSet
 import scalam.plotting.styles.Style
 import scalam.plotting.styles.StyleElement
 

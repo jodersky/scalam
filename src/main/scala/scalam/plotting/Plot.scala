@@ -1,7 +1,6 @@
 package scalam.plotting
 
 import scala.sys.process._
-import scalam.DataSet
 import scalam.m.ast._
 import scalax.file.Path
 import scalam.plotting.styles._
@@ -51,7 +50,7 @@ class Plot(
           Evaluate(Function(plot, params: _*))
     }
     def legend(dataSets: Seq[DataSet]) =
-      Evaluate(Function(Identifier("legend"), (for (d <- dataSets) yield StringLiteral(d.name)): _*)) :: Nil
+      Evaluate(Function(Identifier("legend"), (for (d <- dataSets) yield StringLiteral(d.label)): _*)) :: Nil
 
     val commands = new scala.collection.mutable.ListBuffer[Statement]
     commands ++= (for (d <- richDataSets) yield loadData(d))

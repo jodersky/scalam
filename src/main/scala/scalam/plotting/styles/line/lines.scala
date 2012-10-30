@@ -4,7 +4,7 @@ import scalam.m.ast._
 import scalam.plotting.styles.StyleElement
 
 trait Line extends StyleElement {
-  def name = StringLiteral("LineStyle")
+  val name = StringLiteral("LineStyle")
 }
 
 case object Solid extends Line {def expression = StringLiteral("-")}
