@@ -6,13 +6,13 @@ import scalam.m.ast._
 
 trait StyleElement {
   //command line option
-  def name: StringLiteral
+  def name: Expression
   //expression
   def expression: Expression
 }
 
 trait Style[+S <: StyleElement] {  
-  def apply(dataSets: Seq[DataSet]): Tuple2[Seq[Statement], DataSet => S]
+  def apply(dataSets: Seq[DataSet]): Tuple2[Seq[Root], DataSet => S]
 }
 
 case class Uniform[S <: StyleElement](element: S) extends Style[S] {
