@@ -7,7 +7,7 @@ package object scalam extends LowPriorityImplicits {
   
   implicit def denseVector2Ops[A: ClassManifest](v: DenseVector[A]) = new DenseVectorOps(v)
 
-  implicit def denseVectorBuildFrom[A: ClassManifest]: CanBuildFrom[DenseVector[_], A, DenseVector[A]] =
+  implicit def denseVectorCanBuildFrom[A: ClassManifest]: CanBuildFrom[DenseVector[_], A, DenseVector[A]] =
     new CanBuildFrom[DenseVector[_], A, DenseVector[A]] {
       def apply(from: DenseVector[_]): Builder[A, DenseVector[A]] = apply()
       def apply(): Builder[A, DenseVector[A]] = collection.DenseVectorOps.newBuilder[A]
