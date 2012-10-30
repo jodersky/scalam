@@ -11,6 +11,8 @@ trait Root {
     case expression: Expression => expression.m + ";"
     case comment: Comment => comment.m
   }
+  
+  def withComment(comment: Comment) = EOLComment(this, comment)
 }
 
 trait Comment extends Mable with Root {
