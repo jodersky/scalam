@@ -7,15 +7,21 @@ package scalam.m.ast
  * @define construct identifier
  */
 case class Identifier(name: String) extends Mable {
-
   def m = name
+}
 
-  def toValid = {
-    val word = name.filter(c => c.isLetterOrDigit || c == '_')
-    val id = word.headOption match {
-      case None => "x"
-      case Some(c) => if (!c.isLetter) 'x' + word else word
+object Identifier {
+
+  def makeValid(raw: String) = {
+    val transformSymbols = Map(' ' -> '_').withDefault(c => c)
+
+    val validChars = raw.map(c => transformSymbols(c))
+
+    validChars.headOption match {
+      case Some(c) if (!c.isLetter) => 'x' + validChars
+      case Some(c) => validChars
+      case None => "id"
     }
-    Identifier(id)
   }
+
 }
