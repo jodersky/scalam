@@ -40,13 +40,19 @@ package object scalam extends LowPriorityImplicits {
     }
   }
   
-  implicit def intDenseMatrixIsLoadable = denseMatrixIsLoadable[Int](_.toInt)
-  implicit def doubleDenseMatrixIsLoadable = denseMatrixIsLoadable[Double](_.toDouble)
-  implicit def floatDenseMatrixIsLoadable = denseMatrixIsLoadable[Float](_.toFloat)
-  implicit def byteDenseMatrixIsLoadable = denseMatrixIsLoadable[Byte](_.toByte)
-  implicit def longDenseMatrixIsLoadable = denseMatrixIsLoadable[Long](_.toLong)
-  implicit def booleanDenseMatrixIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
+  implicit def intDenseIsLoadable = denseMatrixIsLoadable[Int](_.toInt)
+  implicit def doubleDenseIsLoadable = denseMatrixIsLoadable[Double](_.toDouble)
+  implicit def floatDenseIsLoadable = denseMatrixIsLoadable[Float](_.toFloat)
+  implicit def byteDenseIsLoadable = denseMatrixIsLoadable[Byte](_.toByte)
+  implicit def longDenseIsLoadable = denseMatrixIsLoadable[Long](_.toLong)
+  implicit def booleanDenseIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
   
- 
+ /* implicit val string2Int: (String => Int) = (x: String) => x.toInt
+  implicit val string2Double: (String => Double) = (x: String) => x.toDouble
+  implicit val string2Char: (String => Char) = (x: String) => x.toChar*/
+  
+  //implicit val cv = (d: String) => d.toDouble
+  
+  //val m = scalam.io.load[DenseMatrix[Double]](scalax.file.Path(""))
 
 }
