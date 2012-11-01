@@ -15,7 +15,7 @@ object Identifier {
   def makeValid(raw: String) = {
     val transformSymbols = Map(' ' -> '_').withDefault(c => c)
 
-    val validChars = raw.map(c => transformSymbols(c))
+    val validChars = raw.map(c => transformSymbols(c)).filter(c => c.isLetterOrDigit || c == '_')
 
     validChars.headOption match {
       case Some(c) if (!c.isLetter) => 'x' + validChars
