@@ -4,7 +4,7 @@ import scalax.file.Path
 import breeze.linalg.{ Vector, DenseVector }
 
 case class DataSet(points: Seq[(Double, Double)], label: String) {
-  val name = label
+  val name = scalam.m.ast.Identifier(label).toValid.name
   
   lazy val (xs, ys) = points.unzip
   def save(path: Path) = {
