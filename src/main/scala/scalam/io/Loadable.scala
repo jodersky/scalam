@@ -1,7 +1,7 @@
 package scalam.io
 
-import scalax.io.Input
+import scalax.file.Path
 
 trait Loadable[A] {
-  def load(in: Input): A
+  def load(in: Path): A
 }

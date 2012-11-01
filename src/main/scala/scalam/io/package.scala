@@ -11,9 +11,7 @@ package object io {
   }
 
   def save[A <% Saveable](objectToSave: A, path: Path) = {
-    path.createFile(createParents = true, failIfExists = false)
-    for (processor <- path.outputProcessor; out = processor.asOutput)
-      objectToSave.save(out)
+    objectToSave.save(path)
   }
   
 }

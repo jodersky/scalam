@@ -22,11 +22,11 @@ object DataSet {
   def apply(points: Seq[(Double, Double)], label: String) = new DataSet(points, label, Identifier.makeValid(label))
 
   implicit val dataSetIsSaveable = (ds: DataSet) => new Saveable {
-    def save(out: scalax.io.Output) = for ((x, y) <- ds.points) yield out.write(x + " " + y + "\n")
+    def save(out: scalax.file.Path) = for ((x, y) <- ds.points) yield out.write(x + " " + y + "\n")
   }
 
   implicit def dataSetIsLoadable = new Loadable[DataSet] {
-    def load(in: scalax.io.Input) = new DataSet(Seq(), "", "")
+    def load(in: scalax.file.Path) = new DataSet(Seq(), "", "")
   }
 
 }

@@ -29,7 +29,7 @@ package object scalam extends LowPriorityImplicits {
     }
 
   def denseMatrixIsLoadable[A: ClassManifest](converter: String => A): Loadable[DenseMatrix[A]] = new Loadable[DenseMatrix[A]] {
-    def load(in: scalax.io.Input) = {
+    def load(in: scalax.file.Path) = {
       val lines: Array[String] = in.lines().dropWhile(_.isEmpty).toArray
       val separator = "\\s|,"
       val elements: Array[Array[String]] = lines.map(_.split(separator))
@@ -48,7 +48,7 @@ package object scalam extends LowPriorityImplicits {
   implicit def booleanDenseIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
 
   implicit def denseMatrixIsSaveable = (m: DenseMatrix[_]) => new Saveable {
-    def save(out: scalax.io.Output) = {
+    def save(out: scalax.file.Path) = {
       for (i <- 0 until m.rows) m(i, ::).valuesIterator.mkString("", " ", "\n")
     }
   }

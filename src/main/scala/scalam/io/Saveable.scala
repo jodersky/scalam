@@ -1,7 +1,9 @@
 package scalam.io
 
-import scalax.io.Output
+import scalax.file.Path
 
 trait Saveable {
-  def save(out: Output)
+  
+  def save(out: Path): Unit
+  
 }
