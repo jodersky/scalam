@@ -4,6 +4,7 @@ import breeze.linalg.DenseVector
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.Builder
+import scala.reflect.ClassTag
 
 /**
  * This class serves as a wrapper for `breeze.linalg.DenseVector`s with all the operations found in
@@ -24,7 +25,7 @@ import scala.collection.mutable.Builder
  * @define mayNotTerminateInf
  * @define willNotTerminateInf
  */
-class DenseVectorOps[Elem: ClassManifest](override val repr: DenseVector[Elem]) extends DenseVectorLike[Elem, DenseVector[Elem]] {
+class DenseVectorOps[Elem: ClassTag](override val repr: DenseVector[Elem]) extends DenseVectorLike[Elem, DenseVector[Elem]] {
   val self = repr
   def newBuilder = DenseVectorOps.newBuilder[Elem]
 
@@ -37,5 +38,5 @@ class DenseVectorOps[Elem: ClassManifest](override val repr: DenseVector[Elem]) 
  * A companion object for DenseVectorsOps.
  */
 object DenseVectorOps {
-  def newBuilder[Elem: ClassManifest] = new ArrayBuffer[Elem] mapResult (x => new DenseVector(x.toArray))
+  def newBuilder[Elem: ClassTag] = new ArrayBuffer[Elem] mapResult (x => new DenseVector(x.toArray))
 }

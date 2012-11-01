@@ -1,6 +1,7 @@
 package scalam
 
 import scala.collection.generic.CanBuildFrom
+import scala.language.higherKinds
 
 /** Contains useful math functions. */
 package object math {
@@ -32,4 +33,8 @@ package object math {
     }
   }
 
+}
+
+package math{
+  object Dummy
 }
