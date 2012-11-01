@@ -2,7 +2,7 @@ package scalam.m.ast
 
 /**
  * A matlab identifier.
- * @name name of variable (this must be a valid matlab identifier string)
+ * @param name name of variable (this must be a valid matlab identifier string)
  *
  * @define construct identifier
  */

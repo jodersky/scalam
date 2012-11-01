@@ -10,11 +10,13 @@ package object math {
    * The algorithm takes a window of width `width` that "slides" along the whole collection.
    * A new collection is created by taking the average of all points located in each window.
    *
+   * @usecase def smooth[Elem, Coll[Elem]](collection: Coll[Elem], width: Int, passes: Int): Coll[Elem] = sys.error("")
+   * 
    * @param collection the collection to smooth
    * @param width the window's witdh
    * @param passes how many times the collection is smoothed (i.e. how often smooth calls itself recursively)
    * @tparam Elem the type of the elements contained in the collection
-   * @tparam Coll[Elem] the type of the collection to be smoothed
+   * @tparam Coll the type of the collection to be smoothed
    */
   def smooth[Elem, Coll[Elem]](collection: Coll[Elem], width: Int, passes: Int = 1)(implicit fractional: Fractional[Elem], cbf: CanBuildFrom[Coll[Elem], Elem, Coll[Elem]], view: Coll[Elem] => Seq[Elem]): Coll[Elem] = {
     def average(xs: Seq[Elem]): Elem = {
