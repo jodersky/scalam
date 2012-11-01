@@ -1,7 +1,9 @@
 import breeze.linalg.DenseVector
+import breeze.linalg.DenseMatrix
 import scalam.collection._
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.Builder
+import scalam.io.{ Loadable, Saveable }
 
 /**
  * A number of commonly applied implicit conversions are defined here, and
@@ -25,5 +27,32 @@ package object scalam extends LowPriorityImplicits {
       def apply(from: DenseVector[_]): Builder[A, DenseVector[A]] = apply()
       def apply(): Builder[A, DenseVector[A]] = collection.DenseVectorOps.newBuilder[A]
     }
+
+  def denseMatrixIsLoadable[A: ClassManifest](converter: String => A): Loadable[DenseMatrix[A]] = new Loadable[DenseMatrix[A]] {
+    def load(in: scalax.io.Input) = {
+      val lines: Array[String] = in.lines().dropWhile(_.isEmpty).toArray
+      val separator = "\\s|,"
+      val elements: Array[Array[String]] = lines.map(_.split(separator))
+      require(elements.forall(_.length == elements(0).length), "Cannot load non-rectangular matrix. Check your data file.")
+      
+      val linear = elements.transpose.flatten
+      new DenseMatrix(elements.length, linear.map(converter(_)))
+    }
+  }
+  
+  implicit def intDenseIsLoadable = denseMatrixIsLoadable[Int](_.toInt)
+  implicit def doubleDenseIsLoadable = denseMatrixIsLoadable[Double](_.toDouble)
+  implicit def floatDenseIsLoadable = denseMatrixIsLoadable[Float](_.toFloat)
+  implicit def byteDenseIsLoadable = denseMatrixIsLoadable[Byte](_.toByte)
+  implicit def longDenseIsLoadable = denseMatrixIsLoadable[Long](_.toLong)
+  implicit def booleanDenseIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
+  
+ /* implicit val string2Int: (String => Int) = (x: String) => x.toInt
+  implicit val string2Double: (String => Double) = (x: String) => x.toDouble
+  implicit val string2Char: (String => Char) = (x: String) => x.toChar*/
+  
+  //implicit val cv = (d: String) => d.toDouble
+  
+  //val m = scalam.io.load[DenseMatrix[Double]](scalax.file.Path(""))
 
 }
