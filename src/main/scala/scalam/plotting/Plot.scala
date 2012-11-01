@@ -6,6 +6,7 @@ import scalax.file.Path
 import scalam.plotting.styles._
 import scala.collection.mutable.Map
 import scala.collection.mutable.ListBuffer
+import scalam.io.Saveable
 
 class Plot(
   val dataSets: Seq[DataSet],
@@ -15,11 +16,7 @@ class Plot(
   grid: Boolean = true,
   legend: Boolean = true,
   fontSize: Int = 10,
-  styles: Seq[Style[StyleElement]] = Seq(),
-  name: String = "plot" + Plot.next) {
-
-  val directory = Path(name)
-  val localPlotFile = Path("results.m")
+  styles: Seq[Style[StyleElement]] = Seq()) {
 
   def preamble = {
     val df = new java.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
@@ -31,7 +28,7 @@ class Plot(
 
   class RichDataSet(val id: Identifier, val localPath: Path, val underlying: DataSet)
 
-  def richDataSets = {
+  val richDataSets = {
     val knownIds = Map[Identifier, Int]()
     def toRich(dataSet: DataSet) = {
       val firstId = Identifier(dataSet.name)
@@ -87,43 +84,24 @@ class Plot(
     roots.toList
   }
 
-  def save() = {
-    for (d <- richDataSets) d.underlying.save(directory / d.localPath)
-
-    val plotFile = (directory / localPlotFile)
-    plotFile.createFile(createParents = true, failIfExists = false)
-    for (processor <- plotFile.outputProcessor; out = processor.asOutput) {
-      for (p <- preamble) out.write(p.line + "\n")
-      for (r <- roots) out.write(r.line + "\n")
-    }
-
-  }
-
-  def run() = {
-    Process(
-      "matlab -nodesktop -nosplash -r " + localPlotFile.path.takeWhile(_ != '.'),
-      directory.fileOption,
-      "" -> "") #> (directory / "log.txt").fileOption.get run
-  }
-
 }
 
 object Plot {
+  val PlotFileName = "results.m"
+
   private[this] var counter = -1
   private def next = { counter += 1; counter }
 
-  private def randomDataSet(length: Int) = {
-    import scala.util.Random
-    val data = for (i <- 0 until length) yield (i * 1.0, Random.nextDouble() * 10)
-    val name = "a"
-    DataSet(data, name)
+  implicit val plotIsSaveable = (plot: Plot) => new Saveable {
+    def save(path: scalax.file.Path) = {
+      val plotFile = (path / PlotFileName)
+      plotFile.createFile(createParents = true, failIfExists = false)
+      for (processor <- plotFile.outputProcessor; out = processor.asOutput)
+        for (r <- plot.roots) out.write(r.line + "\n")
+
+      for (d <- plot.richDataSets) d.underlying.save(path / d.localPath)
+    }
   }
-
-  val ds = Seq(
-    DataSet(Seq((0.0, 1.0), (1.0, 1.0), (2.0, 1.0), (3.0, 0.0), (4.0, 1.0), (5.0, 1.0)), "temperature"),
-    DataSet(Seq((0.0, 0.0), (1.0, 1.0), (2.0, 4.0), (3.0, 9.0)), """\alpha""")) ++ (0 to 10).map(_ => randomDataSet(10))
-
-  val test = new Plot(ds, "title", "x", "y")
 
   private object m {
     import scalam.m.ast._
@@ -150,5 +128,4 @@ object Plot {
     def legend(dataSets: Seq[DataSet]) =
       Function(Identifier("legend"), dataSets.map(d => StringLiteral(d.label)): _*)
   }
-
 }
