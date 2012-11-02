@@ -7,6 +7,7 @@ import scalam.plotting.styles._
 import scala.collection.mutable.Map
 import scala.collection.mutable.ListBuffer
 import scalam.io.Saveable
+import scala.language.implicitConversions
 
 class Plot(
   val dataSets: Seq[DataSet],
@@ -92,7 +93,7 @@ object Plot {
   private[this] var counter = -1
   private def next = { counter += 1; counter }
 
-  implicit val plotIsSaveable = (plot: Plot) => new Saveable {
+  implicit def plotIsSaveable(plot: Plot) = new Saveable {
     def save(path: scalax.file.Path) = {
       val plotFile = (path / PlotFileName)
       plotFile.createFile(createParents = true, failIfExists = false)

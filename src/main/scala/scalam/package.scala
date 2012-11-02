@@ -42,17 +42,16 @@ package object scalam extends LowPriorityImplicits {
     }
   }
 
-  implicit def intDenseIsLoadable = denseMatrixIsLoadable[Int](_.toInt)
-  implicit def doubleDenseIsLoadable = denseMatrixIsLoadable[Double](_.toDouble)
-  implicit def floatDenseIsLoadable = denseMatrixIsLoadable[Float](_.toFloat)
-  implicit def byteDenseIsLoadable = denseMatrixIsLoadable[Byte](_.toByte)
-  implicit def longDenseIsLoadable = denseMatrixIsLoadable[Long](_.toLong)
-  implicit def booleanDenseIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
+  implicit def intDenseMatrixIsLoadable = denseMatrixIsLoadable[Int](_.toInt)
+  implicit def doubleDenseMatrixIsLoadable = denseMatrixIsLoadable[Double](_.toDouble)
+  implicit def floatDenseMatrixIsLoadable = denseMatrixIsLoadable[Float](_.toFloat)
+  implicit def byteDenseMatrixIsLoadable = denseMatrixIsLoadable[Byte](_.toByte)
+  implicit def longDenseMatrixIsLoadable = denseMatrixIsLoadable[Long](_.toLong)
+  implicit def booleanDenseMatrixIsLoadable = denseMatrixIsLoadable[Boolean](_.toBoolean)
 
-  implicit def denseMatrixIsSaveable = (m: DenseMatrix[_]) => new Saveable {
+  implicit def denseMatrixIsSaveable(m: DenseMatrix[_]) = new Saveable {
     def save(out: scalax.file.Path) = {
       for (i <- 0 until m.rows) m(i, ::).valuesIterator.mkString("", " ", "\n")
     }
   }
-
 }
