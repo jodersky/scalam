@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
  * methods such as `filter` and `map` will yield an object of type `WrappedDenseVector`
  * rather than a `DenseVector`.
  *
- * @see [[scala.collection.mutable.WrappedArray]]
+ * @see `scala.collection.mutable.WrappedArray`
  * 
  * @tparam Elem type of the elements contained in this WrappedDenseVector.
  *

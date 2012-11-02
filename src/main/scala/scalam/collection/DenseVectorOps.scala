@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
  * methods such as `filter` and `map` will yield a `DenseVector`, whereas a `WrappedDenseVector`
  * will remain a `WrappedDenseVector`.
  *
- * @see [[scala.collection.mutable.ArrayOps]]
+ * @see `scala.collection.mutable.ArrayOps`
  *
  * @tparam Elem type of the elements contained in this DenseVector.
  *
