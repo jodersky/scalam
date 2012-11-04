@@ -21,6 +21,10 @@ case class DataSet(points: Seq[(Double, Double)], label: String, name: String) {
 object DataSet {
 
   def apply(points: Seq[(Double, Double)], label: String) = new DataSet(points, label, Identifier.makeValid(label))
+  
+  def apply(xs: Seq[Double], ys: Seq[Double], label: String) = new DataSet(xs zip ys, label, Identifier.makeValid(label))
+  
+  def apply(xs: Seq[Double], ys: Seq[Double], label: String, name: String) = new DataSet(xs zip ys, label, name)
 
   implicit def dataSetIsSaveable(ds: DataSet) = new Saveable {
     def save(out: scalax.file.Path) = for ((x, y) <- ds.points) yield out.write(x + " " + y + "\n")
