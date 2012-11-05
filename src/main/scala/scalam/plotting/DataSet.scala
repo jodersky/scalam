@@ -10,12 +10,6 @@ case class DataSet(points: Seq[(Double, Double)], label: String, name: String) {
 
   lazy val (xs, ys) = points.unzip
 
-  def save(path: Path) = {
-    path.createFile(createParents = true, failIfExists = false)
-    for (processor <- path.outputProcessor; out = processor.asOutput)
-      for ((x, y) <- points) out.write(x + " " + y + "\n")
-  }
-
 }
 
 object DataSet {
