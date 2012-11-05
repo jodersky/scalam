@@ -1,5 +1,7 @@
 name := "scalam"
 
+organization := "com.github.jodersky"
+
 version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.10.0-RC1"
@@ -16,3 +18,13 @@ libraryDependencies += "com.jsuereth" % "scala-arm_2.10.0-RC1" %  "1.2"
 
 scalacOptions ++= Seq("-deprecation","-feature")
 
+scalacOptions in Compile in doc ++= Seq("-diagrams", "-implicits")
+
+scalacOptions in Compile in doc <++= baseDirectory.map {
+  (bd: File) => Seq(
+    "-sourcepath",
+    bd.getAbsolutePath,
+    "-doc-source-url",
+    "https://github.com/jodersky/scalam/tree/2.10€{FILE_PATH}.scala"
+  )
+}
