@@ -25,6 +25,6 @@ scalacOptions in Compile in doc <++= baseDirectory.map {
     "-sourcepath",
     bd.getAbsolutePath,
     "-doc-source-url",
-    "https://github.com/jodersky/scalam/tree/2.10€{FILE_PATH}.scala"
+    "https://github.com/jodersky/scalam/tree/master€{FILE_PATH}.scala"
   )
 }
