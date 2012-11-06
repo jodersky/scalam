@@ -71,13 +71,14 @@ class Plot(
     val roots = new ListBuffer[Root]
     roots ++= preamble
     roots ++= loads
+    roots ++= setup
     roots += m.newFigure
     roots += m.hold(true)
     roots += m.grid(this.grid)
+    roots += m.fontSize(this.fontSize)
     roots += m.title(this.title)
     roots += m.xLabel(this.xLabel)
     roots += m.yLabel(this.yLabel)
-    roots += m.fontSize(this.fontSize)
     roots ++= plots
     roots += m.legend(dataSets)
 
