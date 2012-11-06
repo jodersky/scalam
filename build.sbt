@@ -18,7 +18,7 @@ libraryDependencies += "com.jsuereth" % "scala-arm_2.10.0-RC1" %  "1.2"
 
 scalacOptions ++= Seq("-deprecation","-feature")
 
-scalacOptions in Compile in doc ++= Seq("-diagrams", "-implicits")
+scalacOptions in Compile in doc ++= Seq("-diagrams", "-implicits", "-doc-title", "scalam")
 
 scalacOptions in Compile in doc <++= baseDirectory.map {
   (bd: File) => Seq(
