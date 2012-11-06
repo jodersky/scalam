@@ -11,8 +11,8 @@ import scala.language.implicitConversions
 class Plot(
   val dataSets: Seq[DataSet],
   title: String,
-  xLabel: String,
-  yLabel: String,
+  xAxis: Axis,
+  yAxis: Axis,
   grid: Boolean = true,
   legend: Boolean = true,
   fontSize: Int = 10,
@@ -77,8 +77,8 @@ class Plot(
     roots += m.grid(this.grid)
     roots += m.fontSize(this.fontSize)
     roots += m.title(this.title)
-    roots += m.xLabel(this.xLabel)
-    roots += m.yLabel(this.yLabel)
+    roots ++= m.xAxis(this.xAxis)
+    roots ++= m.yAxis(this.yAxis)
     roots ++= plots
     roots += m.legend(dataSets)
 
@@ -114,8 +114,12 @@ object Plot {
     def hold(b: Boolean) = Function(Identifier("hold"), if (b) On else Off)
     def grid(show: Boolean) = Function(Identifier("grid"), if (show) On else Off)
     def title(s: String) = Function(Identifier("title"), StringLiteral(s))
-    def xLabel(s: String) = Function(Identifier("xlabel"), StringLiteral(s))
-    def yLabel(s: String) = Function(Identifier("ylabel"), StringLiteral(s))
+    def xAxis(x: Axis) = Seq(
+      Function(Identifier("xlabel"), StringLiteral(x.label)),
+      Function(Identifier("set"), Variable(Identifier("gca")), StringLiteral("xscale"), x.scale.expression))
+    def yAxis(x: Axis) = Seq(
+      Function(Identifier("ylabel"), StringLiteral(x.label)),
+      Function(Identifier("set"), Variable(Identifier("gca")), StringLiteral("yscale"), x.scale.expression))
     def fontSize(size: Int) = Function(Identifier("set"), Variable(Identifier("gca")), StringLiteral("fontsize"), IntLiteral(size))
     def load(id: Identifier, path: Path) = Assign(id, Function(Identifier("load"), StringLiteral(path.path)))
     def plot(dataSet: Identifier, styleElements: Seq[StyleElement]) = {
