@@ -3,7 +3,6 @@ package scalam.plotting
 import scala.sys.process._
 import scalam.m.ast._
 import scalax.file.Path
-import scalam.plotting.styles._
 import scala.collection.mutable.Map
 import scala.collection.mutable.ListBuffer
 import scalam.io.Saveable

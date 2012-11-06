@@ -1,9 +1,8 @@
-package scalam.plotting.styles.color
+package scalam.plotting.color
 
 import scalam.m.ast._
 import scalam.plotting.DataSet
-import scalam.plotting.styles.Style
-import scalam.plotting.styles.StyleElement
+import scalam.plotting.Style
 
 class MColorStyle(val function: Identifier) extends Style[Color] {
   private val ColorVariable = Identifier("cc")

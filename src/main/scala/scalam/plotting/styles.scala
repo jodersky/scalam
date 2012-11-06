@@ -1,8 +1,6 @@
-package scalam.plotting.styles
+package scalam.plotting
 
-import scalam.plotting.DataSet
 import scalam.m.ast._
-
 
 trait StyleElement {
   //command line option
@@ -11,8 +9,8 @@ trait StyleElement {
   def expression: Expression
 }
 
-trait Style[+S <: StyleElement] {  
-  def apply(dataSets: Seq[DataSet]): Tuple2[Seq[Root], DataSet => S]
+trait Style[+S <: StyleElement] {
+  def apply(dataSets: Seq[DataSet]): (Seq[Root], DataSet => S)
 }
 
 case class Uniform[S <: StyleElement](element: S) extends Style[S] {

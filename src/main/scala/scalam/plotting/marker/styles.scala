@@ -1,9 +1,8 @@
-package scalam.plotting.styles.marker
+package scalam.plotting.marker
 
 import scalam.plotting.DataSet
 import scalam.m.ast._
-import scalam.plotting.styles.Style
-import scalam.plotting.styles.StyleElement
+import scalam.plotting.Style
 
 object AllMarkerStyle extends Style[Marker] {
 
@@ -12,6 +11,6 @@ object AllMarkerStyle extends Style[Marker] {
     case (d, i) => d -> markers(i % (markers.length-1))    
   }.toMap
   
-  def apply(dataSets: Seq[DataSet]) = (Seq.empty[Statement], map(dataSets))
+  def apply(dataSets: Seq[DataSet]) = (Seq.empty[Root], map(dataSets))
 
 }

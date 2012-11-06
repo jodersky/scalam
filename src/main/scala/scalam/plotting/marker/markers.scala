@@ -1,9 +1,7 @@
-package scalam.plotting.styles.marker
+package scalam.plotting.marker
 
-import scalam.plotting.DataSet
 import scalam.m.ast._
-import scalam.plotting.styles.Style
-import scalam.plotting.styles.StyleElement
+import scalam.plotting.StyleElement
 
 trait Marker extends StyleElement {
   def name = StringLiteral("Marker")
