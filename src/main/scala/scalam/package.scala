@@ -51,7 +51,8 @@ package object scalam extends LowPriorityImplicits {
 
   implicit def denseMatrixIsSaveable(m: DenseMatrix[_]) = new Saveable {
     def save(out: scalax.file.Path) = {
-      for (i <- 0 until m.rows) m(i, ::).valuesIterator.mkString("", " ", "\n")
+      val data = for (i <- 0 until m.rows) yield m(i, ::).valuesIterator.mkString(" ")
+      out.write(data.mkString("\n"))
     }
   }
 }

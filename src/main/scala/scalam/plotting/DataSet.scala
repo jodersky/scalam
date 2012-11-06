@@ -21,11 +21,10 @@ object DataSet {
   def apply(xs: Seq[Double], ys: Seq[Double], label: String, name: String) = new DataSet(xs zip ys, label, name)
 
   implicit def dataSetIsSaveable(ds: DataSet) = new Saveable {
-    def save(out: scalax.file.Path) = for ((x, y) <- ds.points) yield out.write(x + " " + y + "\n")
-  }
-
-  implicit def dataSetIsLoadable = new Loadable[DataSet] {
-    def load(in: scalax.file.Path) = new DataSet(Seq(), "", "")
+    def save(out: scalax.file.Path) = {
+      val data = ds.points.map{case (x, y) => x + " " + y}.mkString("\n")
+      out.write(data)
+    }
   }
 
 }
