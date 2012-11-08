@@ -6,7 +6,7 @@ import scala.io._
 import java.io._
 import scala.concurrent._
 
-class Interpreter(command: String, pwd: Path) {
+class Interpreter(val command: String, val pwd: Path) {
   private val inputStream = new SyncVar[OutputStream];
 
   val process = Process(command, pwd.fileOption, "" -> "").run(
