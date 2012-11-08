@@ -6,14 +6,11 @@ version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.10.0-RC1"
 
-// dependency is temporatily explicit (until scala-io provide a scala 2.10 build)
-libraryDependencies += "com.jsuereth" % "scala-arm_2.10.0-RC1" %  "1.2"
+libraryDependencies += "com.github.scala-incubator.io" % "scala-io-core_2.10.0-RC1" % "0.4.1"
 
-// dependencies currently removed (until scala-io and breeze-math provide a scala 2.10 build), the libraries are currently unmanaged and contained in lib
-//libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-core" % "0.4.1-seq"
+libraryDependencies += "com.github.scala-incubator.io" % "scala-io-file_2.10.0-RC1" % "0.4.1"
 
-//libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.1-seq"
-
+// dependency currently removed (until breeze-math provides a scala 2.10 build), the library is currently unmanaged and contained in lib
 //libraryDependencies += "org.scalanlp" %% "breeze-math" % "0.1"
 
 scalacOptions ++= Seq("-deprecation","-feature")
