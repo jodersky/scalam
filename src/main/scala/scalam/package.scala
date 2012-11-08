@@ -35,7 +35,7 @@ package object scalam extends LowPriorityImplicits {
       val lines: Array[String] = in.lines().dropWhile(_.isEmpty).toArray
       val separator = "\\s|,"
       val elements: Array[Array[String]] = lines.map(_.split(separator))
-      require(elements.forall(_.length == elements(0).length), "Cannot load non-rectangular matrix. Check your data file.")
+      require(elements.forall(_.length == elements(0).length), "Cannot load non-rectangular matrix. Check your data file: " + in.path)
 
       val linear = elements.transpose.flatten
       new DenseMatrix(elements.length, linear.map(converter(_)))
