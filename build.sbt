@@ -10,8 +10,8 @@ libraryDependencies += "com.github.scala-incubator.io" % "scala-io-core_2.10.0-R
 
 libraryDependencies += "com.github.scala-incubator.io" % "scala-io-file_2.10.0-RC1" % "0.4.1"
 
-// dependency currently removed (until breeze-math provides a scala 2.10 build), the library is currently unmanaged and contained in lib
-//libraryDependencies += "org.scalanlp" %% "breeze-math" % "0.1"
+// dependency currently refers to a local build (until breeze-math provides a scala 2.10 build)
+libraryDependencies += "org.scalanlp" %% "breeze-math" % "0.2-SNAPSHOT"
 
 scalacOptions ++= Seq("-deprecation","-feature")
 
