@@ -80,7 +80,7 @@ class Plot(
     roots ++= m.xAxis(this.xAxis)
     roots ++= m.yAxis(this.yAxis)
     roots ++= plots
-    roots += m.legend(dataSets)
+    if (legend) roots += m.legend(dataSets)
 
     roots.toList
   }
