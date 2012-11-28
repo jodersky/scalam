@@ -33,8 +33,8 @@ package object scalam extends LowPriorityImplicits {
   def denseMatrixIsLoadable[A: ClassTag](converter: String => A): Loadable[DenseMatrix[A]] = new Loadable[DenseMatrix[A]] {
     def load(in: scalax.file.Path) = {
       val lines: Array[String] = in.lines().dropWhile(_.isEmpty).toArray
-      val separator = "\\s|,"
-      val elements: Array[Array[String]] = lines.map(_.split(separator))
+      val separator = "\\s+|,"
+      val elements: Array[Array[String]] = lines.map(_.trim.split(separator))
       require(elements.forall(_.length == elements(0).length), "Cannot load non-rectangular matrix. Check your data file: " + in.path)
 
       val linear = elements.transpose.flatten
